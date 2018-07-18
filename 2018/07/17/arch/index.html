@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Linux,Arch,Install,Tutorial," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="InstallFisrt things first: don’t need to separate swap partition. use swap file on ext4. Simplyfy just install systemd-swap.  boot pacstrap /mnt base base-devel instead of pacstrap /mntreplace the mir">
+<meta name="keywords" content="Linux,Arch,Install,Tutorial">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Install Arch Linux">
+<meta property="og:url" content="http://212.64.17.82/2018/07/17/arch/index.html">
+<meta property="og:site_name" content="Lingao&#39;s Blog">
+<meta property="og:description" content="InstallFisrt things first: don’t need to separate swap partition. use swap file on ext4. Simplyfy just install systemd-swap.  boot pacstrap /mnt base base-devel instead of pacstrap /mntreplace the mir">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2018-07-17T13:02:01.240Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Install Arch Linux">
+<meta name="twitter:description" content="InstallFisrt things first: don’t need to separate swap partition. use swap file on ext4. Simplyfy just install systemd-swap.  boot pacstrap /mnt base base-devel instead of pacstrap /mntreplace the mir">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://212.64.17.82/2018/07/17/arch/"/>
+
+
+
+
+
+  <title>Install Arch Linux | Lingao's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Lingao's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Welcome</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://212.64.17.82/2018/07/17/arch/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Lingao Jin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lingao's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Install Arch Linux</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-17T20:08:00+08:00">
+                2018-07-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="Install"><a href="#Install" class="headerlink" title="Install"></a>Install</h2><h3 id="Fisrt-things-first"><a href="#Fisrt-things-first" class="headerlink" title="Fisrt things first:"></a>Fisrt things first:</h3><ol>
+<li>don’t need to separate swap partition. use swap file on ext4. Simplyfy just install <strong>systemd-swap</strong>.</li>
+</ol>
+<h3 id="boot"><a href="#boot" class="headerlink" title="boot"></a>boot</h3><blockquote>
+<p>pacstrap /mnt base base-devel instead of pacstrap /mnt<br>replace the mirrorlist</p>
+</blockquote>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/pacman.d/mirrorlist</span><br></pre></td></tr></table></figure>
+<p>edit at the top of the file</p>
+<a id="more"></a>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## Tsinghua University</span></span><br><span class="line">Server = http://mirrors.tuna.tsinghua.edu.cn/archlinux/<span class="variable">$repo</span>/os/<span class="variable">$arch</span></span><br></pre></td></tr></table></figure>
+<p><a href="https://www.youtube.com/watch?v=DfC5hgdtbWY" target="_blank" rel="noopener">Archlinux install in less than 10 minutes on a UEFI system</a></p>
+<h3 id="boot-about"><a href="#boot-about" class="headerlink" title="boot about"></a>boot about</h3><p><a href="https://wiki.archlinux.org/index.php/systemd-boot#Installing_the_EFI_boot_manager" title="systemd-boot" target="_blank" rel="noopener">systemd-boot</a></p>
+<h3 id="Some-Setup"><a href="#Some-Setup" class="headerlink" title="Some Setup"></a>Some Setup</h3><h3 id="locale-gen"><a href="#locale-gen" class="headerlink" title="locale-gen"></a>locale-gen</h3><p>First edit <code>/etc/locale.conf</code> LANG=en_US.UTF-8<br>uncomment <code>en_US.UTF-8</code> in <code>/etc/locale.gen</code><br>than run <code>locale-gen</code> command</p>
+<h3 id="Setup-Network"><a href="#Setup-Network" class="headerlink" title="Setup Network"></a>Setup Network</h3><ul>
+<li>run <code>ip link</code> command to know netcard’s name. For wire is some thing like enp*. For wireless card, it could be wlp58s0.</li>
+</ul>
+<p>If the netword card is down, turn it on.<br>For me, it is enp0s3</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ip link <span class="built_in">set</span> dev enp0s3 up</span><br></pre></td></tr></table></figure>
+<ul>
+<li>vi /etc/systemd/network/enp0s3.network</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[Match]</span><br><span class="line">name=enp0s3</span><br><span class="line">[Network]</span><br><span class="line">DHCP=yes</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Save and exit. Restart your systemd network.</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl restart systemd-networkd</span><br><span class="line">systemctl <span class="built_in">enable</span> systemd-networkd</span><br></pre></td></tr></table></figure>
+<ul>
+<li>And add DNS server in file <code>/etc/resolv.conf</code></li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nameserver 114.114.114.114</span><br><span class="line">nameserver 8.8.8.8</span><br></pre></td></tr></table></figure>
+<h3 id="Install-Fonts"><a href="#Install-Fonts" class="headerlink" title="Install Fonts"></a>Install Fonts</h3><h3 id="Add-Some-Other-Resource"><a href="#Add-Some-Other-Resource" class="headerlink" title="Add Some Other Resource"></a>Add Some Other Resource</h3><p>Edit file <code>/etc/pacman.conf</code></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[archlinuxcn]</span><br><span class="line"><span class="comment">#The Chinese Arch Linux communities packages.</span></span><br><span class="line">SigLevel = Optional TrustedOnly</span><br><span class="line">Server   = https://mirrors.xjtu.edu.cn/archlinuxcn/<span class="variable">$arch</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pacman -Syu</span><br><span class="line">pacman -S archlinuxcn-keyring</span><br></pre></td></tr></table></figure>
+<p>Install fonts</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># English</span></span><br><span class="line">pacman -S adobe-source-code-pro-fonts adobe-sans-pro-fonts ttf-dejavu ttf-droid ttf-oxygen</span><br><span class="line"></span><br><span class="line"><span class="comment"># Chinese</span></span><br><span class="line">pacman -S adobe-source-han-sans-cn-fonts</span><br></pre></td></tr></table></figure>
+<h3 id="Install-Desktop-environment"><a href="#Install-Desktop-environment" class="headerlink" title="Install Desktop environment"></a>Install Desktop environment</h3><p>Install x-server</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pacman -S xorg-server xorg-xinit</span><br></pre></td></tr></table></figure>
+<p>Install xfce4</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pacman -S xfce4 xfce4-goodies networkmanager network-manager-applet</span><br></pre></td></tr></table></figure>
+<p>Start network-manager on boot</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl <span class="built_in">enable</span> NetworkManager</span><br></pre></td></tr></table></figure>
+<p>Desktop Launcher</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">pacman -S lxdm</span><br><span class="line">systemctl <span class="built_in">enable</span> lxdm			<span class="comment"># 开机自启</span></span><br><span class="line">vim /etc/lxdm/lxdm.conf</span><br><span class="line">&gt; session=/usr/bin/startxfce4</span><br></pre></td></tr></table></figure>
+<p>Sound</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pacman -S alsa-utils</span><br></pre></td></tr></table></figure>
+<p>Input</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">pacman -S fcitx-im fcitx-configtool</span><br><span class="line">vim /etc/profile</span><br><span class="line">&gt; <span class="built_in">export</span> GTK_IM_MODULE=fcitx</span><br><span class="line">&gt; <span class="built_in">export</span> QT_IM_MODULE=fcitx</span><br><span class="line">&gt; <span class="built_in">export</span> XMODIFIERS=<span class="string">"@im=fcitx"</span></span><br></pre></td></tr></table></figure>
+<p>Automatically Mounting Mobile Hard Disks and Mobile Phones, Reading and Writing NTFS Disks</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pacman -S gvfs gvfs-mtp ntfs-3g</span><br></pre></td></tr></table></figure>
+<h4 id="Change-the-DPI-for-the-screen"><a href="#Change-the-DPI-for-the-screen" class="headerlink" title="Change the DPI for the screen"></a>Change the DPI for the screen</h4><p>Go to Settings Manager → Appearance → Fonts, and change the DPI parameter. The value of 180 or 192 seems to work well on Retina screens. To get a more precise number, you can use xdpyinfo | grep resolution, and then double it.</p>
+<p>To enlarge icons in system tray, right-click on it (aim for empty space / top pixels / bottom pixels, so that you will not activate icons themselves) → “Properties” → set “Maximum icon size” to 32, 48 or 64.</p>
+<h2 id="Configration"><a href="#Configration" class="headerlink" title="Configration"></a>Configration</h2><h3 id="How-to-use-AUR"><a href="#How-to-use-AUR" class="headerlink" title="How to use AUR"></a>How to use AUR</h3><ol>
+<li>First get the git clone URL and copy it</li>
+<li>git clone it </li>
+<li>cd the folder</li>
+<li>run command <code>makepkg -s</code></li>
+<li><code>sudo pacman -U yout-package-name.pkg.tar.xz</code></li>
+</ol>
+<h3 id="learn-some-knowledge-about-systemd"><a href="#learn-some-knowledge-about-systemd" class="headerlink" title="learn some knowledge about systemd"></a>learn some knowledge about systemd</h3><h4 id="What-is-systemd-service"><a href="#What-is-systemd-service" class="headerlink" title="What is systemd service"></a>What is systemd service</h4><p><a href="https://zhuanlan.zhihu.com/p/37566461" target="_blank" rel="noopener">What is systemd service?</a></p>
+<p>we could build a user(manually) systemd service</p>
+<ul>
+<li><p>create a folder  </p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span></span><br><span class="line">mkdir -p ~/.config/systemd/user/</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>create a file named <strong>minetest.service</strong></p>
+</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[Unit]</span><br><span class="line">Description= Minetest server</span><br><span class="line">Documentation= https://wiki.minetest.net/Main_Page</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Type= simple</span><br><span class="line">ExecStart= /usr/games/minetest --server</span><br></pre></td></tr></table></figure>
+<ul>
+<li>start service</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemd --user start minetest</span><br></pre></td></tr></table></figure>
+<ul>
+<li>stop service</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemd --user stop minetest</span><br></pre></td></tr></table></figure>
+<h4 id="How-to-use-systemd-service"><a href="#How-to-use-systemd-service" class="headerlink" title="How to use systemd service"></a>How to use systemd service</h4><p><a href="https://zhuanlan.zhihu.com/p/37601508" target="_blank" rel="noopener">How to use systemd service?</a></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># minetest.service</span></span><br><span class="line">[Unit]</span><br><span class="line">Description= Minetest server</span><br><span class="line">Documentation= https://wiki.minetest.net/Main_Page</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Type= simple</span><br><span class="line"></span><br><span class="line">ExecStart= /usr/games/minetest --server</span><br><span class="line">ExecStartPost= /home/&lt;username&gt;/bin/mtsendmail.sh <span class="string">"Ready to rumble?"</span> <span class="string">"Minetest Starting up"</span></span><br><span class="line"></span><br><span class="line">TimeoutStopSec= 180</span><br><span class="line">ExecStop= /home/&lt;username&gt;/bin/mtsendmail.sh <span class="string">"Off to bed. Nightie night!"</span> <span class="string">"</span></span><br><span class="line"><span class="string">  Minetest Stopping in 2 minutes"</span></span><br><span class="line">ExecStop= /bin/sleep 120</span><br><span class="line">ExecStop= /bin/<span class="built_in">kill</span> -2 <span class="variable">$MAINPID</span></span><br></pre></td></tr></table></figure>
+<p>strat service</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl --user start minetest</span><br></pre></td></tr></table></figure>
+<p>startup start service</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo mv /home/&lt;username&gt;/.config/systemd/user/minetest.service /etc/systemd/system/</span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl start minetest</span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl status minetest</span><br></pre></td></tr></table></figure>
+<h3 id="install-systemd-swap"><a href="#install-systemd-swap" class="headerlink" title="install systemd-swap"></a>install systemd-swap</h3><p>To enable systemd-swap</p>
+<h4 id="Files-palced"><a href="#Files-palced" class="headerlink" title="Files palced:"></a>Files palced:</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/etc/systemd/swap.conf</span><br><span class="line">/usr/lib/systemd/system/systemd-swap.service</span><br><span class="line">/usr/bin/systemd-swap</span><br></pre></td></tr></table></figure>
+<h4 id="Please-not-forget-to-enable-by"><a href="#Please-not-forget-to-enable-by" class="headerlink" title="Please not forget to enable by:"></a>Please not forget to enable by:</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl <span class="built_in">enable</span> systemd-swap</span><br></pre></td></tr></table></figure>
+<h3 id="Install-SSR-and-Make-It-Start-on-Boot"><a href="#Install-SSR-and-Make-It-Start-on-Boot" class="headerlink" title="Install SSR and Make It Start on Boot"></a>Install SSR and Make It Start on Boot</h3><p><a href="https://github.com/Ssrbackup/shadowsocksr/tree/manyuser" target="_blank" rel="noopener">SSR python</a></p>
+<h4 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># this is /usr/lib/systemd/system/your_cmd.service</span></span><br><span class="line"><span class="comment"># or /etc/systemd/system/your_cmd.service</span></span><br><span class="line"><span class="comment"># (or /lib/systemd/system/your_cmd.service dependent on </span></span><br><span class="line"><span class="comment">#  your linux distribution flavor )</span></span><br><span class="line">[Unit]</span><br><span class="line">Description=your_cmd server daemon</span><br><span class="line">Documentation=http://tuxgraphics.org/npa/</span><br><span class="line">After=network.target syslog.target</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line"><span class="comment"># see man systemd.service </span></span><br><span class="line">Type=oneshot</span><br><span class="line">ExecStart=/usr/bin/your_cmd-start.sh</span><br><span class="line">RemainAfterExit=<span class="literal">true</span></span><br><span class="line">ExecStop=/usr/bin/your_cmd-stop.sh</span><br><span class="line">StandardOutput=journal</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></table></figure>
+<h4 id="shadowsocks-service"><a href="#shadowsocks-service" class="headerlink" title="shadowsocks service"></a>shadowsocks service</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[Service]</span><br><span class="line">Type=oneshot</span><br><span class="line"><span class="comment"># User=lingao</span></span><br><span class="line">ExecStart=/home/lingao/shadowsocksr-manyuser/ssrstart.sh</span><br><span class="line">RemainAfterExit=<span class="literal">true</span></span><br><span class="line">ExecStop=/home/lingao/shadowsocksr-manyuser/ssrstop.sh</span><br><span class="line"></span><br><span class="line"><span class="comment"># /usr/bin/python</span></span><br><span class="line"><span class="comment"># /home/lingao/shadowsocksr-manyuser/shadowsocks/local.py</span></span><br><span class="line"><span class="comment"># /home/lingao/shadowsocksr-manyuser/ssrstart.sh</span></span><br><span class="line"><span class="comment"># ExecStop=/home/lingao/shadowsocksr-manyuser/ssrstop.sh</span></span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy= multi-user.target</span><br></pre></td></tr></table></figure>
+<h3 id="proxychains4-ng"><a href="#proxychains4-ng" class="headerlink" title="proxychains4-ng"></a>proxychains4-ng</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">./configure --prefix=/usr --sysconfdir=/etc</span><br><span class="line">make</span><br><span class="line">[optional] sudo make install</span><br><span class="line">[optional] sudo make i nstall-config (installs proxychains.conf)</span><br></pre></td></tr></table></figure>
+<p>config file is in /etc/proxychains.conf</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/proxychains.conf </span><br><span class="line"></span><br><span class="line">socks5 127.0.0.1 1080</span><br></pre></td></tr></table></figure>
+<h3 id="Alias"><a href="#Alias" class="headerlink" title="Alias"></a>Alias</h3><p>Edit <code>~/.bashrc</code> file</p>
+<p><code>~/.bashrc</code> file</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ~/.bashrc</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># If not running interactively, don't do anything</span></span><br><span class="line">[[ $- != *i* ]] &amp;&amp; <span class="built_in">return</span></span><br><span class="line"></span><br><span class="line">PS1=<span class="string">'[\u@\h \W]\$ '</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">alias</span> ls=<span class="string">'ls --color=auto'</span></span><br><span class="line"><span class="built_in">alias</span> ll=<span class="string">'ls -l'</span></span><br><span class="line"><span class="built_in">alias</span> lla=<span class="string">'ls -la'</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">alias</span> p=<span class="string">'proxychains4'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Aliases for software managment</span></span><br><span class="line"><span class="built_in">alias</span> pacman=<span class="string">'sudo pacman'</span></span><br><span class="line"><span class="built_in">alias</span> update=<span class="string">'sudo pacman -Syu'</span></span><br></pre></td></tr></table></figure>
+<h3 id="run-chrome-with-proxy-aruguments"><a href="#run-chrome-with-proxy-aruguments" class="headerlink" title="run chrome with proxy aruguments"></a>run chrome with proxy aruguments</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">google-chrome-stable --proxy-server=socks5://127.0.0.1:1080</span><br></pre></td></tr></table></figure>
+<h3 id="keepassxc"><a href="#keepassxc" class="headerlink" title="keepassxc"></a>keepassxc</h3><p>use keepass to store your passwords</p>
+<h3 id="how-to-add-shortcut-of-terminal"><a href="#how-to-add-shortcut-of-terminal" class="headerlink" title="how to add shortcut of terminal"></a>how to add shortcut of terminal</h3><ol>
+<li>go to <strong>Start</strong> at the top left corner, and open Settings Manager or open Terminal and type xfce4-settings-manager</li>
+<li>open Keyboard</li>
+<li>open Application Shortcuts Tab</li>
+<li>click Add button (with greed-icon) below</li>
+<li>type xfce4-terminal</li>
+<li>trigger the shortcut, which is in this (Ctrl + Alt + T)</li>
+</ol>
+<h3 id="Backup"><a href="#Backup" class="headerlink" title="Backup"></a>Backup</h3>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Linux/" rel="tag"># Linux</a>
+          
+            <a href="/tags/Arch/" rel="tag"># Arch</a>
+          
+            <a href="/tags/Install/" rel="tag"># Install</a>
+          
+            <a href="/tags/Tutorial/" rel="tag"># Tutorial</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/07/17/first_post/" rel="next" title="DigitalOcean's First Post">
+                <i class="fa fa-chevron-left"></i> DigitalOcean's First Post
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/07/18/git_tips/" rel="prev" title="Git_tips">
+                Git_tips <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Lingao Jin</p>
+              <p class="site-description motion-element" itemprop="description">Hello World!</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/totorowechat" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Install"><span class="nav-number">1.</span> <span class="nav-text">Install</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Fisrt-things-first"><span class="nav-number">1.1.</span> <span class="nav-text">Fisrt things first:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#boot"><span class="nav-number">1.2.</span> <span class="nav-text">boot</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#boot-about"><span class="nav-number">1.3.</span> <span class="nav-text">boot about</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Some-Setup"><span class="nav-number">1.4.</span> <span class="nav-text">Some Setup</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#locale-gen"><span class="nav-number">1.5.</span> <span class="nav-text">locale-gen</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Setup-Network"><span class="nav-number">1.6.</span> <span class="nav-text">Setup Network</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Install-Fonts"><span class="nav-number">1.7.</span> <span class="nav-text">Install Fonts</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Add-Some-Other-Resource"><span class="nav-number">1.8.</span> <span class="nav-text">Add Some Other Resource</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Install-Desktop-environment"><span class="nav-number">1.9.</span> <span class="nav-text">Install Desktop environment</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Change-the-DPI-for-the-screen"><span class="nav-number">1.9.1.</span> <span class="nav-text">Change the DPI for the screen</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Configration"><span class="nav-number">2.</span> <span class="nav-text">Configration</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#How-to-use-AUR"><span class="nav-number">2.1.</span> <span class="nav-text">How to use AUR</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#learn-some-knowledge-about-systemd"><span class="nav-number">2.2.</span> <span class="nav-text">learn some knowledge about systemd</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#What-is-systemd-service"><span class="nav-number">2.2.1.</span> <span class="nav-text">What is systemd service</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#How-to-use-systemd-service"><span class="nav-number">2.2.2.</span> <span class="nav-text">How to use systemd service</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#install-systemd-swap"><span class="nav-number">2.3.</span> <span class="nav-text">install systemd-swap</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Files-palced"><span class="nav-number">2.3.1.</span> <span class="nav-text">Files palced:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Please-not-forget-to-enable-by"><span class="nav-number">2.3.2.</span> <span class="nav-text">Please not forget to enable by:</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Install-SSR-and-Make-It-Start-on-Boot"><span class="nav-number">2.4.</span> <span class="nav-text">Install SSR and Make It Start on Boot</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Example"><span class="nav-number">2.4.1.</span> <span class="nav-text">Example</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#shadowsocks-service"><span class="nav-number">2.4.2.</span> <span class="nav-text">shadowsocks service</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#proxychains4-ng"><span class="nav-number">2.5.</span> <span class="nav-text">proxychains4-ng</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Alias"><span class="nav-number">2.6.</span> <span class="nav-text">Alias</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#run-chrome-with-proxy-aruguments"><span class="nav-number">2.7.</span> <span class="nav-text">run chrome with proxy aruguments</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#keepassxc"><span class="nav-number">2.8.</span> <span class="nav-text">keepassxc</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#how-to-add-shortcut-of-terminal"><span class="nav-number">2.9.</span> <span class="nav-text">how to add shortcut of terminal</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Backup"><span class="nav-number">2.10.</span> <span class="nav-text">Backup</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Lingao Jin</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
